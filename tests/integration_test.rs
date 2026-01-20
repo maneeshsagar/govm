@@ -124,10 +124,10 @@ fn test_govm_global_no_version() {
     let stdout = String::from_utf8_lossy(&output.stdout);
     // Should either show version or "No global version set"
     assert!(
-        stdout.contains("No global version") || 
-        stdout.contains("→") ||
-        stdout.chars().any(|c| c.is_numeric()) ||
-        stdout.is_empty() == false,
+        stdout.contains("No global version")
+            || stdout.contains("→")
+            || stdout.chars().any(|c| c.is_numeric())
+            || !stdout.is_empty(),
         "Should show global version status"
     );
 }

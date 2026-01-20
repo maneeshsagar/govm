@@ -2,12 +2,12 @@ use anyhow::Result;
 use std::env;
 use std::fs;
 use std::os::unix::fs::PermissionsExt;
-use std::path::{Path, PathBuf};
+use std::path::Path;
 
 use crate::constants::GO_BINARIES;
 
 /// Ensure shims exist - only creates them if missing or outdated
-pub fn ensure_shims(shims_dir: &PathBuf) -> Result<()> {
+pub fn ensure_shims(shims_dir: &Path) -> Result<()> {
     let govm_path = env::current_exe()?;
     let govm_path_str = govm_path.display().to_string();
 
@@ -33,7 +33,7 @@ pub fn ensure_shims(shims_dir: &PathBuf) -> Result<()> {
 }
 
 /// Create a single shim script
-pub fn create_shim(binary: &str, govm_path: &Path, shims_dir: &PathBuf) -> Result<()> {
+pub fn create_shim(binary: &str, govm_path: &Path, shims_dir: &Path) -> Result<()> {
     let shim_path = shims_dir.join(binary);
 
     let shim_content = format!(
@@ -58,7 +58,7 @@ exec "{govm}" exec "{binary}" "$@"
 }
 
 /// Force recreate all shims (used by rehash command)
-pub fn create_all_shims(shims_dir: &PathBuf) -> Result<()> {
+pub fn create_all_shims(shims_dir: &Path) -> Result<()> {
     let govm_path = env::current_exe()?;
 
     for binary in GO_BINARIES {
@@ -72,6 +72,7 @@ pub fn create_all_shims(shims_dir: &PathBuf) -> Result<()> {
 mod tests {
     use super::*;
     use std::os::unix::fs::PermissionsExt;
+    use std::path::PathBuf;
     use tempfile::TempDir;
 
     #[test]

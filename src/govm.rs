@@ -53,7 +53,8 @@ impl GoVM {
                 }
             }
         }
-        versions.sort_by(|a, b| parse(b).cmp(&parse(a)));
+        // Sort by parsed version in descending order
+        versions.sort_by_key(|v| std::cmp::Reverse(parse(v)));
         Ok(versions)
     }
 
