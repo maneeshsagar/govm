@@ -279,6 +279,7 @@ impl GoVM {
         let status = Command::new(&binary_path)
             .args(args)
             .env("GOROOT", &goroot)
+            .env("GOTOOLCHAIN", "local")  // Prevent Go from auto-downloading toolchains
             .status()
             .context(format!("Failed to execute {}", command))?;
 
